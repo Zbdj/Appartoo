@@ -72,13 +72,44 @@ MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?ret
 
     dbo.collection("id").find({ pseudo: pseudo}).toArray(function(err, result){
       if (err) throw err;
-      console.log(result)
+      // console.log(result)
       res.render('profil.ejs', {
         alls: result
       });
     });
   });
 
+
+  //Update profil d'un Marsupilami
+
+  app.post('/update/:pseudo', function (req, res){
+    var pseudo = req.params.pseudo;
+    var new_value = res.body;
+
+    console.log(pseudo);
+
+    dbo.collection("id").updateOne(pseudo, new_value, function(err, res) {
+      if (err) throw err;
+
+      console.log("Marsupilami");
+      db.close();
+    });
+
+  })
+
+
+  app.get('/delete/:pseudo', function (req, res) {
+    var pseudo = { pseudo: req.params.pseudo };
+    console.log(pseudo)
+
+    dbo.collection("id").deleteOne(pseudo, function(err, obj) {
+      if (err) throw err;
+      console.log(req.params.pseudo + " a été supprimer");
+    });
+
+    res.redirect('/home');
+    // db.close();
+  });
 
 
 
