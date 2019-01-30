@@ -42,9 +42,9 @@ MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?ret
     }, function (err, result) {
       if (err) throw err;
 
-      console.log(result.ops);
+      // console.log(result.ops);
 
-      db.close();
+      // db.close();
     })
 
     res.redirect('/home');
@@ -54,9 +54,9 @@ MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?ret
 
   app.get('/home', function (req, res) {
 
-    dbo.collection("id").find({}).toArray(function(err, result) {
+    dbo.collection("id").find({}).toArray(function (err, result) {
       if (err) throw err;
-      console.log(result);
+      // console.log(result);
       res.render('home.ejs', {
         alls: result
       });
@@ -70,9 +70,13 @@ MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?ret
     var pseudo = req.params.pseudo;
     // console.log(req.params._id)
 
-    dbo.collection("id").find({ pseudo: pseudo}).toArray(function(err, result){
+    dbo.collection("id").find({
+      pseudo: pseudo
+    }).toArray(function (err, result) {
       if (err) throw err;
       // console.log(result)
+      // db.close();
+
       res.render('profil.ejs', {
         alls: result
       });
@@ -82,27 +86,39 @@ MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?ret
 
   //Update profil d'un Marsupilami
 
-  app.post('/update/:pseudo', function (req, res){
+  app.post('/update/:pseudo/', function (req, res) {
     var pseudo = req.params.pseudo;
-    var new_value = res.body;
+    var new_value = req.body.username;
 
-    console.log(pseudo);
+    // console.log(pseudo);
+    // console.log(new_value);
 
-    dbo.collection("id").updateOne(pseudo, new_value, function(err, res) {
-      if (err) throw err;
-
-      console.log("Marsupilami");
-      db.close();
+    dbo.collection("id").updateOne({
+      'pseudo': pseudo
+    }, {
+      $set: {
+        'pseudo': new_value
+      }
+    }, function (e, r) {
+      if (e) {
+        console.log(e)
+      } else if (r) {
+        console.log(r)
+      }
     });
+    res.redirect('/home');
+
 
   })
 
 
   app.get('/delete/:pseudo', function (req, res) {
-    var pseudo = { pseudo: req.params.pseudo };
+    var pseudo = {
+      pseudo: req.params.pseudo
+    };
     console.log(pseudo)
 
-    dbo.collection("id").deleteOne(pseudo, function(err, obj) {
+    dbo.collection("id").deleteOne(pseudo, function (err, obj) {
       if (err) throw err;
       console.log(req.params.pseudo + " a été supprimer");
     });
