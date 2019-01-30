@@ -11,7 +11,7 @@
 
     <% alls.forEach(function(all){%>
         <tr>
-        <td><%=all.pseudo %> agé de <%=' ' + all.age + ' ans appartenant a la famille ' + all.famille %><%= ' de race ' + all.race + ' ayant comme nourriture préférés ' + all.nourriture  %></td><a href="/delete/<%= all.id %>"></a><br>
+        <td><%=all.pseudo + " agé de " + all.age + " "%><a href="/show/<%= all.pseudo %>"> Afficher le profil</a><br>
         </tr>
         <%})%>
     <br>

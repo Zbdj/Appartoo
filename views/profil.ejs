@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Profil</title>
+</head>
+<body>
+        <% alls.forEach(function(all){%>
+            <tr>
+                <td><%=all.pseudo%><br>
+                <td><%=all.age%><br>
+                <td><%=all.famille%><br>
+                <td><%=all.race%><br>
+                <td><%=all.nourriture%><br>
+            </tr>
+            <%})%>
+        <a href="/home">Retour a l'accueil</a>
+</body>
+</html>

@@ -51,15 +51,6 @@ MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?ret
   });
 
   //Liste de tout les Marsupilamis
-  app.get('/all', function(err,resultat){
-
-
-    
-    res.render('login.ejs', {
-
-    });
-    db.close();
-  });
 
   app.get('/home', function (req, res) {
 
@@ -72,6 +63,38 @@ MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?ret
     })
 
   });
+
+  //Afficher le profil d'un marsupilamis
+
+  app.get('/show/:pseudo', function (req, res) {
+    var pseudo = req.params.pseudo;
+    // console.log(req.params._id)
+
+    dbo.collection("id").find({ pseudo: pseudo}).toArray(function(err, result){
+      if (err) throw err;
+      console.log(result)
+      res.render('profil.ejs', {
+        alls: result
+      });
+    });
+  });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   //Connection
   // app.get('/login', function (req, res) {
