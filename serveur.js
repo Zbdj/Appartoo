@@ -12,16 +12,48 @@ MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?ret
   if(!err) {
     console.log("We are connected");
   }
+
+    if (err) throw err;
+    var dbo = db.db("Marsupilami");
+
+  
+  //Inscription du marsupilami
+  app.post('/home/create', function (req,res){
+
+    var pseudo = req.body.username;
+    var password = req.body.password;
+    var age = req.body.age;
+    var famille = req.body.famille;
+    var race = req.body.race;
+    var nourriture = req.body.nourriture;
+
+
+    dbo.collection("id").insertOne({pseudo,password,age,famille,race,nourriture}, function(err, result) {
+      if (err) throw err;
+      
+      console.log(result.ops);
+
+      db.close();
+      })
+
+      res.redirect('/home');
+  });
+
 });
-
-
 
 app.get('/home', function (req,res){
 
-    res.writeHead(200);
+    res.render('home.ejs', {
 
-    res.end('Nice');
-  
+    });  
+});
+
+app.get('/register', function (req,res){
+
+  res.render('register.ejs', {
+
+  });
+
 });
 
 console.log('connection')
