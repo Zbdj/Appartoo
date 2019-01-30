@@ -3,22 +3,26 @@ var app = express();
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 
 var MongoClient = require('mongodb').MongoClient;
 
 // Database
-MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?retryWrites=true",{ useNewUrlParser: true }, function(err, db) {
-  if(!err) {
+MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?retryWrites=true", {
+  useNewUrlParser: true
+}, function (err, db) {
+  if (!err) {
     console.log("We are connected");
   }
 
-    if (err) throw err;
-    var dbo = db.db("Marsupilami");
+  if (err) throw err;
+  var dbo = db.db("Marsupilami");
 
-  
+
   //Inscription du marsupilami
-  app.post('/home/create', function (req,res){
+  app.post('/home/create', function (req, res) {
 
     var pseudo = req.body.username;
     var password = req.body.password;
@@ -28,27 +32,86 @@ MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?ret
     var nourriture = req.body.nourriture;
 
 
-    dbo.collection("id").insertOne({pseudo,password,age,famille,race,nourriture}, function(err, result) {
+    dbo.collection("id").insertOne({
+      pseudo,
+      password,
+      age,
+      famille,
+      race,
+      nourriture
+    }, function (err, result) {
       if (err) throw err;
-      
+
       console.log(result.ops);
 
       db.close();
-      })
+    })
 
-      res.redirect('/home');
+    res.redirect('/home');
   });
 
+  //Liste de tout les Marsupilamis
+  app.get('/all', function(err,resultat){
+
+
+    
+    res.render('login.ejs', {
+
+    });
+    db.close();
+  });
+
+  app.get('/home', function (req, res) {
+
+    dbo.collection("id").find({}).toArray(function(err, result) {
+      if (err) throw err;
+      console.log(result);
+      res.render('home.ejs', {
+        alls: result
+      });
+    })
+
+  });
+
+  //Connection
+  // app.get('/login', function (req, res) {
+  //   res.render('login.ejs', {
+
+  //   });
+  // });
+
+  // app.post('/login/submit', function (req, res) {
+  //   var pseudo = req.body.username;
+  //   var password = req.body.password;
+
+  //   dbo.collection("id").find({
+  //       "pseudo": "test",
+  //       "password": "123"
+  //     }),
+  //     function (err, result) {
+  //       if (err) {
+  //         console.log(err)
+  //       } else if (result) {
+  //         //user connected
+  //         console.log(result);
+  //         console.log("result");
+  //         db.close();
+  //         res.render('login.ejs', {
+  //           resultats: result,
+  //           forms: res
+  //         });
+  //       } else {
+  //         console.log("marche pas")
+  //       }
+  //     };
+  // });
+
+
 });
 
-app.get('/home', function (req,res){
 
-    res.render('home.ejs', {
 
-    });  
-});
-
-app.get('/register', function (req,res){
+app.get('/register', function (req, res) {
 
   res.render('register.ejs', {
 

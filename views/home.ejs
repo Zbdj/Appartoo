@@ -7,7 +7,15 @@
     <title>Home</title>
 </head>
 <body>
-    <h1>Accueil du site</h1>
-    <a href="/register">S'inscrire</a>
+    <h1>Liste des Marsupilamis</h1>
+
+    <% alls.forEach(function(all){%>
+        <tr>
+        <td><%=all.pseudo %> agé de <%=' ' + all.age + ' ans appartenant a la famille ' + all.famille %><%= ' de race ' + all.race + ' ayant comme nourriture préférés ' + all.nourriture  %></td><a href="/delete/<%= all.id %>"></a><br>
+        </tr>
+        <%})%>
+    <br>
+    <a href="/register">S'inscrire sur le site</a>
+
 </body>
 </html>
