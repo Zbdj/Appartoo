@@ -173,8 +173,12 @@ MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?ret
       }
     });
   });
+//Deconnection
 
-
+app.get('/logout', function (req, res){
+    localStorage.removeItem('status');
+    res.redirect('/login');
+  })
 });
 
 app.get('/register', function (req, res) {
