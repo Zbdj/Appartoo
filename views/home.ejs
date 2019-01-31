@@ -11,6 +11,12 @@
 <body>
     <h1>Liste des Marsupilamis</h1>
 
+    <%if(logs !== 'Login'){ %>
+    <script>
+            window.location.href = "/login";
+    </script>
+    <%} %>
+
     <% alls.forEach(function(all){%>
     <tr>
         <td>
@@ -18,8 +24,6 @@
     </tr>
     <%})%>
     <br>
-    <a href="/register">S'inscrire sur le site</a>
-    <a href="/login">Se connecter sur le site</a>
 
 </body>
 

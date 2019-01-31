@@ -15,6 +15,12 @@
         <button type="submit">Se connecter</button>
     </form>
 
+    <% if(locals.session) {%>
+    <%= 'Vos identifiants ne correspondent pas veuillez ressayez'%>
+    <% }%>
+
+
+        <a href="/register">S'inscrire sur le site</a>
 </body>
 
 </html>

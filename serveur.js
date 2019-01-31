@@ -1,6 +1,9 @@
 var express = require('express');
 var app = express();
 
+var localStorage = require('localStorage');
+
+
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -50,15 +53,18 @@ MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?ret
     res.redirect('/home');
   });
 
+
   //Liste de tout les Marsupilamis
 
   app.get('/home', function (req, res) {
+    var log = localStorage.getItem('status');
 
     dbo.collection("id").find({}).toArray(function (err, result) {
       if (err) throw err;
-      // console.log(result);
+
       res.render('home.ejs', {
-        alls: result
+        alls: result,
+        logs: log
       });
     })
 
@@ -112,7 +118,7 @@ MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?ret
         'famille': new_famille,
         'race': new_race,
         'nourriture': new_nourriture,
-      } 
+      }
     }, function (e, r) {
       if (e) {
         // console.log(e)
@@ -149,23 +155,21 @@ MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?ret
   app.post('/login/submit', function (req, res) {
     var pseudo = req.body.username;
     var password = req.body.password;
-    
+
     dbo.collection("id").find({
       "pseudo": pseudo
     }).toArray(function (err, r) {
       if (err) throw err;
 
-      if(r[0].password === password)
-      {
+      if (r[0].password === password) {
+        localStorage.setItem('status', 'Login');
+
         console.log(pseudo + ' vient de se connecter')
-        res.render('home.ejs', {
-          session: pseudo
-        });      
-      }
-      else{
+        res.redirect('/home');
+      } else {
         res.render('login.ejs', {
           session: pseudo
-        }); 
+        });
       }
     });
   });
