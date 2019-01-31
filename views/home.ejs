@@ -1,21 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Home</title>
 </head>
+
 <body>
     <h1>Liste des Marsupilamis</h1>
 
     <% alls.forEach(function(all){%>
-        <tr>
-        <td><%=all.pseudo + " agé de " + all.age + " "%><a href="/show/<%= all.pseudo %>"> Afficher le profil</a><br>
-        </tr>
-        <%})%>
+    <tr>
+        <td>
+            <%=all.pseudo + " agé de " + all.age + " "%><a href="/show/<%= all.pseudo %>"> Afficher le profil</a><br>
+    </tr>
+    <%})%>
     <br>
     <a href="/register">S'inscrire sur le site</a>
+    <a href="/login">Se connecter sur le site</a>
 
 </body>
+
 </html>

@@ -74,8 +74,6 @@ MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?ret
       pseudo: pseudo
     }).toArray(function (err, result) {
       if (err) throw err;
-      // console.log(result)
-      // db.close();
 
       res.render('profil.ejs', {
         alls: result
@@ -88,27 +86,41 @@ MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?ret
 
   app.post('/update/:pseudo/', function (req, res) {
     var pseudo = req.params.pseudo;
-    var new_value = req.body.username;
 
-    // console.log(pseudo);
-    // console.log(new_value);
+    console.log(req.body);
+    var new_username = req.body.username;
+    var new_age = req.body.age;
+    var new_famille = req.body.famille;
+    var new_race = req.body.race;
+    var new_nourriture = req.body.nourriture;
 
-    dbo.collection("id").updateOne({
-      'pseudo': pseudo
+    var username = ""
+
+    dbo.collection("id").find({
+      "pseudo": pseudo
+    }).toArray(function (err, r) {
+      if (err) throw err;
+      console.log(r[0]);
+      username = r[0].pseudo
+    });
+    dbo.collection("id").updateMany({
+      "pseudo": pseudo
     }, {
       $set: {
-        'pseudo': new_value
-      }
+        'pseudo': new_username,
+        'age': new_age,
+        'famille': new_famille,
+        'race': new_race,
+        'nourriture': new_nourriture,
+      } 
     }, function (e, r) {
       if (e) {
-        console.log(e)
+        // console.log(e)
       } else if (r) {
-        console.log(r)
+        // console.log(r)
       }
     });
     res.redirect('/home');
-
-
   })
 
 
@@ -127,59 +139,39 @@ MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?ret
     // db.close();
   });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   //Connection
-  // app.get('/login', function (req, res) {
-  //   res.render('login.ejs', {
+  app.get('/login', function (req, res) {
+    res.render('login.ejs', {
 
-  //   });
-  // });
+    });
+  });
 
-  // app.post('/login/submit', function (req, res) {
-  //   var pseudo = req.body.username;
-  //   var password = req.body.password;
+  app.post('/login/submit', function (req, res) {
+    var pseudo = req.body.username;
+    var password = req.body.password;
+    
+    dbo.collection("id").find({
+      "pseudo": pseudo
+    }).toArray(function (err, r) {
+      if (err) throw err;
 
-  //   dbo.collection("id").find({
-  //       "pseudo": "test",
-  //       "password": "123"
-  //     }),
-  //     function (err, result) {
-  //       if (err) {
-  //         console.log(err)
-  //       } else if (result) {
-  //         //user connected
-  //         console.log(result);
-  //         console.log("result");
-  //         db.close();
-  //         res.render('login.ejs', {
-  //           resultats: result,
-  //           forms: res
-  //         });
-  //       } else {
-  //         console.log("marche pas")
-  //       }
-  //     };
-  // });
+      if(r[0].password === password)
+      {
+        console.log(pseudo + ' vient de se connecter')
+        res.render('home.ejs', {
+          session: pseudo
+        });      
+      }
+      else{
+        res.render('login.ejs', {
+          session: pseudo
+        }); 
+      }
+    });
+  });
 
 
 });
-
-
 
 app.get('/register', function (req, res) {
 
