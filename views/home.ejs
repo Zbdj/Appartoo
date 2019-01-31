@@ -5,28 +5,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+        crossorigin="anonymous">
+    <title>Profil</title>
+
     <title>Home</title>
 </head>
 
 <body>
-    <h1>Liste des Marsupilamis</h1>
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="/home">Appartoo</a>
+    </nav>
 
-    <%if(logs !== 'Login'){ %>
-    <script>
+    <div class="container">
+        <h3>Liste des Marsupilamis inscrit sur le site</h3>
+
+        <%if(logs !== 'Login'){ %>
+        <script>
             window.location.href = "/login";
-    </script>
-    <%} %>
+        </script>
+        <%} %>
 
-    <% alls.forEach(function(all){%>
-    <tr>
-        <td>
-            <%=all.pseudo + " agé de " + all.age + " "%><a href="/show/<%= all.pseudo %>"> Afficher le profil</a><br>
-    </tr>
-    <%})%>
-    <br>
-    <form action="/logout" action="GET">
-        <button>Se déconnecter</button>
-    </form>
+        <% alls.forEach(function(all){%>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <td>
+                        <%=all.pseudo + " agé de " + all.age + " "%><a href="/show/<%= all.pseudo %>"> Afficher le
+                            profil</a>
+                </tr>
+                <%})%>
+            </thead>
+        </table>
+
+        <form action="/logout" action="GET">
+            <button class="btn btn-danger">Se déconnecter</button>
+        </form>
+    </div>
 </body>
 
 </html>

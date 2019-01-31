@@ -17,7 +17,7 @@ MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?ret
   useNewUrlParser: true
 }, function (err, db) {
   if (!err) {
-    console.log("We are connected");
+    console.log("Connection Mongo OK");
   }
 
   if (err) throw err;
@@ -44,10 +44,6 @@ MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?ret
       nourriture
     }, function (err, result) {
       if (err) throw err;
-
-      // console.log(result.ops);
-
-      // db.close();
     })
 
     res.redirect('/home');
@@ -55,7 +51,6 @@ MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?ret
 
 
   //Liste de tout les Marsupilamis
-
   app.get('/home', function (req, res) {
     var log = localStorage.getItem('status');
 
@@ -71,7 +66,6 @@ MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?ret
   });
 
   //Afficher le profil d'un marsupilamis
-
   app.get('/show/:pseudo', function (req, res) {
     var pseudo = req.params.pseudo;
     // console.log(req.params._id)
@@ -93,7 +87,7 @@ MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?ret
   app.post('/update/:pseudo/', function (req, res) {
     var pseudo = req.params.pseudo;
 
-    console.log(req.body);
+    // console.log(req.body);
     var new_username = req.body.username;
     var new_age = req.body.age;
     var new_famille = req.body.famille;
@@ -106,7 +100,7 @@ MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?ret
       "pseudo": pseudo
     }).toArray(function (err, r) {
       if (err) throw err;
-      console.log(r[0]);
+      // console.log(r[0]);
       username = r[0].pseudo
     });
     dbo.collection("id").updateMany({
@@ -121,9 +115,9 @@ MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?ret
       }
     }, function (e, r) {
       if (e) {
-        // console.log(e)
+        console.log(e)
       } else if (r) {
-        // console.log(r)
+        console.log(r)
       }
     });
     res.redirect('/home');
@@ -134,7 +128,7 @@ MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?ret
     var pseudo = {
       pseudo: req.params.pseudo
     };
-    console.log(pseudo)
+    // console.log(pseudo)
 
     dbo.collection("id").deleteOne(pseudo, function (err, obj) {
       if (err) throw err;
@@ -142,7 +136,6 @@ MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?ret
     });
 
     res.redirect('/home');
-    // db.close();
   });
 
   //Connection
@@ -160,12 +153,12 @@ MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?ret
       "pseudo": pseudo
     }).toArray(function (err, r) {
       if (err) throw err;
-
-      if (r[0].password === password) {
-        localStorage.setItem('status', 'Login');
-
-        console.log(pseudo + ' vient de se connecter')
-        res.redirect('/home');
+      if (r[0]) {
+        if (r[0].password === password) {
+          localStorage.setItem('status', 'Login');
+          console.log(pseudo + ' vient de se connecter')
+          res.redirect('/home');
+        }
       } else {
         res.render('login.ejs', {
           session: pseudo
@@ -173,9 +166,9 @@ MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?ret
       }
     });
   });
-//Deconnection
 
-app.get('/logout', function (req, res){
+  //Deconnection
+  app.get('/logout', function (req, res) {
     localStorage.removeItem('status');
     res.redirect('/login');
   })
@@ -186,9 +179,8 @@ app.get('/register', function (req, res) {
   res.render('register.ejs', {
 
   });
-
 });
 
-console.log('connection')
+console.log('connection au serveur 8080')
 
 app.listen(8080);
