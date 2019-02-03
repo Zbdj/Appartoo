@@ -7,8 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
         crossorigin="anonymous">
-    <title>Profil</title>
-
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
     <title>Login</title>
 </head>
 
@@ -19,7 +18,7 @@
 
     <div class="container">
 
-        <h3>Se connecter</h3>
+        <h4>Connection</h4>
         <form action="/login/submit" method="POST">
             <div class="form-group">
                 <input type="text" name="username" placeholder="Votre login" class="form-control">
@@ -30,18 +29,17 @@
             </div>
 
             <div class="form-group">
-                <button type="submit" class="btn btn-success">Se connecter</button>
+                <button type="submit" class="btn btn-success">Login</button>
             </div>
         </form>
 
         <div class="form-group">
-            <% if(locals.session) {%>
-            <%= 'Vos identifiants ne correspondent pas veuillez ressayez'%>
+            <% if(locals.e) {%>
+                <div class="alert alert-danger"><p><%= e %></p></div>
             <% }%>
-
-
-            <a href="/register">S'inscrire sur le site</a>
         </div>
+        <a href="/register">Nouveau sur le site ? S'inscrire</a>
+
 </body>
 
 </html>

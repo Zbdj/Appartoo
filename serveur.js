@@ -10,7 +10,10 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
+app.use(express.static(__dirname));
+
 var MongoClient = require('mongodb').MongoClient;
+
 
 // Database
 MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?retryWrites=true", {
@@ -21,6 +24,7 @@ MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?ret
   }
 
   if (err) throw err;
+
   var dbo = db.db("Marsupilami");
 
 
@@ -34,6 +38,12 @@ MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?ret
     var race = req.body.race;
     var nourriture = req.body.nourriture;
 
+    if (pseudo.length === 0 || password.length === 0 || age.length === 0 || famille.length === 0 || race.length === 0 || nourriture.length === 0) {
+      var empty = "empty";
+      res.render('register.ejs', {
+        empty: empty
+      });
+    }
 
     dbo.collection("id").insertOne({
       pseudo,
@@ -46,37 +56,60 @@ MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?ret
       if (err) throw err;
     })
 
-    res.redirect('/home');
+    res.redirect('/login');
   });
 
 
   //Liste de tout les Marsupilamis
   app.get('/home', function (req, res) {
     var log = localStorage.getItem('status');
+    var test = [];
+
 
     dbo.collection("id").find({}).toArray(function (err, result) {
       if (err) throw err;
 
-      res.render('home.ejs', {
-        alls: result,
-        logs: log
-      });
+      dbo.collection("contact").find({
+        user_id: log
+      }).toArray(function (err, friends) {
+        if (err) throw err;
+        // console.log(friends)
+        friends.forEach(function (item) {
+          test.push(item);
+        })
+        
+        res.render('home.ejs', {
+          alls: result,
+          logs: log,
+          friends: test
+        });
+      })
     })
+
+
 
   });
 
-  //Afficher le profil d'un marsupilamis
-  app.get('/show/:pseudo', function (req, res) {
-    var pseudo = req.params.pseudo;
-    // console.log(req.params._id)
+  //Afficher son profil
+  app.get('/show/:id', function (req, res) {
+    var id = req.params.id;
+    var log = localStorage.getItem('status');
+
+    var mongo = require('mongodb');
+    var o_id = new mongo.ObjectID(id);
+
+    // console.log(req.params.id)
 
     dbo.collection("id").find({
-      pseudo: pseudo
+      _id: o_id
     }).toArray(function (err, result) {
       if (err) throw err;
 
+      // console.log(result);
+
       res.render('profil.ejs', {
-        alls: result
+        alls: result,
+        logs: log
       });
     });
   });
@@ -84,55 +117,101 @@ MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?ret
 
   //Update profil d'un Marsupilami
 
-  app.post('/update/:pseudo/', function (req, res) {
-    var pseudo = req.params.pseudo;
+  app.post('/update/:id/', function (req, res) {
+    var id = req.params.id;
 
-    // console.log(req.body);
-    var new_username = req.body.username;
-    var new_age = req.body.age;
-    var new_famille = req.body.famille;
-    var new_race = req.body.race;
-    var new_nourriture = req.body.nourriture;
+    var mongo = require('mongodb');
+    var o_id = new mongo.ObjectID(id);
 
-    var username = ""
+    if (req.body.username !== "") {
+      dbo.collection("id").updateOne({
+        _id: o_id
+      }, {
+        $set: {
+          'pseudo': req.body.username
+        }
+      }, function (e, r) {
+        if (e) {
+          // console.log(e)
+        }
+      });
+    }
 
-    dbo.collection("id").find({
-      "pseudo": pseudo
-    }).toArray(function (err, r) {
-      if (err) throw err;
-      // console.log(r[0]);
-      username = r[0].pseudo
-    });
-    dbo.collection("id").updateMany({
-      "pseudo": pseudo
-    }, {
-      $set: {
-        'pseudo': new_username,
-        'age': new_age,
-        'famille': new_famille,
-        'race': new_race,
-        'nourriture': new_nourriture,
-      }
-    }, function (e, r) {
-      if (e) {
-        console.log(e)
-      } else if (r) {
-        console.log(r)
-      }
-    });
-    res.redirect('/home');
+    if (req.body.age !== "") {
+      dbo.collection("id").updateOne({
+        _id: o_id
+      }, {
+        $set: {
+          'age': req.body.age
+        }
+      }, function (e, r) {
+        if (e) {
+          // console.log(e)
+        }
+      });
+    }
+
+    if (req.body.famille !== "") {
+      dbo.collection("id").updateOne({
+        _id: o_id
+      }, {
+        $set: {
+          'famille': req.body.famille
+        }
+      }, function (e, r) {
+        if (e) {
+          // console.log(e)
+        }
+      });
+    }
+    if (req.body.race !== "") {
+      dbo.collection("id").updateOne({
+        _id: o_id
+      }, {
+        $set: {
+          'race': req.body.race
+        }
+      }, function (e, r) {
+        if (e) {
+          // console.log(e)
+        }
+      });
+    }
+    if (req.body.nourriture !== "") {
+      dbo.collection("id").updateOne({
+        _id: o_id
+      }, {
+        $set: {
+          'nourriture': req.body.nourriture
+        }
+      }, function (e, r) {
+        if (e) {
+          // console.log(e)
+        }
+      });
+    }
+
+    res.redirect('/show/' + id);
+
   })
 
+  //Supprimer son compte
+  app.get('/delete/:id', function (req, res) {
+    localStorage.removeItem('status');
 
-  app.get('/delete/:pseudo', function (req, res) {
-    var pseudo = {
-      pseudo: req.params.pseudo
-    };
-    // console.log(pseudo)
+    var id = req.params.id;
+    var mongodb = require('mongodb');
 
-    dbo.collection("id").deleteOne(pseudo, function (err, obj) {
-      if (err) throw err;
-      console.log(req.params.pseudo + " a été supprimer");
+    dbo.collection('id', function (err, collection) {
+      collection.deleteOne({
+        _id: new mongodb.ObjectID(id)
+      }, function (err, results) {
+        if (err) {
+          // console.log("failed");
+          throw err;
+        }
+        // console.log("success");
+      });
     });
 
     res.redirect('/home');
@@ -149,19 +228,21 @@ MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?ret
     var pseudo = req.body.username;
     var password = req.body.password;
 
+    var erreur_ejs = 'Les identifiants ne correspondent pas essayez à nouveau !';
+
     dbo.collection("id").find({
-      "pseudo": pseudo
+      pseudo: pseudo,
+      password: password
     }).toArray(function (err, r) {
       if (err) throw err;
+
       if (r[0]) {
-        if (r[0].password === password) {
-          localStorage.setItem('status', 'Login');
-          console.log(pseudo + ' vient de se connecter')
-          res.redirect('/home');
-        }
+        // console.log(r);
+        localStorage.setItem('status', r[0]._id);
+        res.redirect('/home');
       } else {
         res.render('login.ejs', {
-          session: pseudo
+          e: erreur_ejs
         });
       }
     });
@@ -172,14 +253,101 @@ MongoClient.connect("mongodb+srv://Zbdj:root@cluster0-lfpq5.mongodb.net/test?ret
     localStorage.removeItem('status');
     res.redirect('/login');
   })
-});
 
-app.get('/register', function (req, res) {
+  //Vue du formulaire register
+  app.get('/register', function (req, res) {
 
-  res.render('register.ejs', {
+    res.render('register.ejs', {
+
+    });
+  });
+
+
+  //Fonctionnalité contact
+  app.get('/add/:pseudo/:id', function (req, res) {
+    var pseudo = req.params.pseudo
+    var id = req.params.id
+
+    dbo.collection("contact").insertOne({
+      user_id: id,
+      pseudo: pseudo
+    }, function (err, result) {
+      if (err) throw err;
+      res.redirect('/home');
+    })
+
+  })
+
+  app.get('/friends/:id', function (req, res) {
+    var id = req.params.id
+
+    // console.log(req.params.id)
+
+    dbo.collection("contact").find({
+      user_id: id
+    }).toArray(function (err, result) {
+      if (err) throw err;
+      // console.log(result)
+
+      res.render('friends.ejs', {
+        friends: result,
+        logs: id
+      });
+    })
+  })
+
+  app.get('/friends/show/:pseudo', function (req, res) {
+    var pseudo = req.params.pseudo
+    // var id = req.params.id
+    var log = localStorage.getItem('status');
+
+    dbo.collection("id").find({
+      pseudo: pseudo,
+    }).toArray(function (err, r) {
+      if (err) throw err;
+      res.render('friends_show.ejs', {
+        infos: r,
+        logs: log
+      });
+    })
+  })
+
+  app.get('/delete/friends/:pseudo', function (req, res) {
+    var pseudo = req.params.pseudo
+    // var id = req.params.id
+    var log = localStorage.getItem('status');
+    dbo.collection('contact', function (err, collection) {
+      collection.deleteOne({
+        user_id: log,
+        pseudo: pseudo
+      }, function (err, results) {
+        if (err) {
+          // console.log("failed");
+          throw err;
+        }
+        // console.log("success");
+      });
+    });
+
+    res.redirect('/home');
+
+  })
+
+
+  //Gestion des mauvaise route 404
+  app.use(function (req, res, next) {
+
+    res.setHeader('Content-Type', 'text/html');
+
+    res.status(404).render('404.ejs');
 
   });
+
+  //Fin de MongoDB/Client
 });
+
+
+
 
 console.log('connection au serveur 8080')
 

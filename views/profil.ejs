@@ -7,17 +7,30 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
         crossorigin="anonymous">
-    <title>Profil</title>
+    <title>Modifier ses informations</title>
 </head>
 
 <body>
     <nav class="navbar navbar-light bg-light">
         <a class="navbar-brand" href="/home">Appartoo</a>
+        <a class="navbar-brand" href="/show/<%= logs %>">Mes informations</a>
+        <a class="navbar-brand" href="/friends/<%= logs %>">Mes amis</a>
+
+        <form action="/logout" action="GET">
+            <button class="btn btn-danger">Se déconnecter</button>
+        </form>
     </nav>
 
     <div class="container">
-        <% alls.forEach(function(all){%>
 
+        <%if(logs === null ){ %>
+        <script>
+            window.location.href = "/login";
+        </script>
+        <%} %>
+
+        <% alls.forEach(function(all){%>
+        <h4>Votre profil</h4>
         <table class="table">
             <thead class="thead-dark">
                 <tr>
@@ -39,22 +52,22 @@
                 </tr>
             </thead>
         </table>
-        <form action="/delete/<%=all.pseudo %>" method="GET">
+        <form action="/delete/<%=all._id%>" method="GET">
             <div class="form-group">
-                <button type="submit" class="btn btn-danger">Supprimer ce Marsupilami</button>
+                <button type="submit" class="btn btn-danger">Supprimer mon compte</button>
             </div>
         </form>
         <%})%>
 
 
         <% alls.forEach(function(all){%>
-        <form action="/update/<%= all.pseudo %>" method="POST">
+        <form action="/update/<%= all._id %>" method="POST">
             <%})%>
             <div class="form-group">
                 <input type="text" name="username" placeholder="Modifier le pseudo" class="form-control">
             </div>
             <div class="form-group">
-                <input type="text" name="age" placeholder="Modifier l'age'" class="form-control">
+                <input type="number" name="age" placeholder="Modifier l'âge" class="form-control">
             </div>
             <div class="form-group">
                 <input type="text" name="famille" placeholder="Modifier le nom de famille" class="form-control">
@@ -66,9 +79,9 @@
                 <input type="text" name="nourriture" placeholder="Modifier la nourriture" class="form-control">
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-warning">Modifier les informations</button>
+                <button type="submit" class="btn btn-warning">Modifier le profil</button>
             </div>
-            <a href="/home">Retour a l'accueil</a>
+            <a href="/home">Retour à l'accueil</a>
         </form>
     </div>
 

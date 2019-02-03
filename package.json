@@ -7,14 +7,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Zbdj/Test_Technique_Node.git"
+    "url": "git+https://github.com/Zbdj/Appartoo.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Zbdj/Test_Technique_Node/issues"
+    "url": "https://github.com/Zbdj/Appartoo/issues"
   },
-  "homepage": "https://github.com/Zbdj/Test_Technique_Node#readme",
+  "homepage": "https://github.com/Zbdj/Appartoo#readme",
   "dependencies": {
     "axios": "^0.18.0",
     "cookie-parser": "^1.4.3",

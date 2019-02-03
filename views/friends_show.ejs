@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+        crossorigin="anonymous">
+    <title>Friends</title>
+</head>
+
+<body>
+
+    <%if(logs === null ){ %>
+    <script>
+        window.location.href = "/login";
+    </script>
+    <%} %>
+
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="/home">Appartoo</a>
+        <a class="navbar-brand" href="/show/<%= logs %>">Mes informations</a>
+        <a class="navbar-brand" href="/friends/<%= logs %>">Mes amis</a>
+        <form action="/logout" action="GET">
+            <button class="btn btn-danger">Se déconnecter</button>
+        </form>
+    </nav>
+
+
+    <div class="container">
+        <% infos.forEach(function(info){%>
+
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <td>
+                        <p>Pseudo :</p>
+                        <%=info.pseudo%><br>
+                    <td>
+                        <p>Age :</p>
+                        <%=info.age%><br>
+                    <td>
+                        <p>Famille :</p>
+                        <%=info.famille%><br>
+                    <td>
+                        <p>Race :</p>
+                        <%=info.race%><br>
+                    <td>
+                        <p>Nourriture :</p>
+                        <%=info.nourriture%><br>
+                </tr>
+            </thead>
+        </table>
+        <a href="/delete/friends/<%= info.pseudo %>">Supprimer
+            <%= info.pseudo %> de votre liste de contact ?</a>
+        <%})%>
+
+</body>
+
+</html>
