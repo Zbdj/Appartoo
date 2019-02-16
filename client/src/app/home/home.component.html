@@ -1,0 +1,27 @@
+<div class="container" style="margin-top: 3%;">
+  <div class="card border-warning">
+    <div class="card-body">
+      <h4>Recontrez des nouveaux Marsupilamis tout autour de vous !</h4>
+      <h6>Afficher <a href="account/{{ id }}" class="text-warning"><strong> Mon Profil</strong>.</a></h6>
+      <h6>Afficher <a href="list/{{ id }}" class="text-warning"><strong> Ma Liste d'amis</strong>.</a></h6>
+      <h6><a href="" (click)="deco()" class="text-danger"><strong> Deconnection</strong>!</a></h6>
+    </div>
+  </div>
+
+  <div class="container" style="margin-top: 3%;">
+    <div class="list-group" *ngFor="let user of users">
+      <div class="list-group-item">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">Vous connaissez peut-être <a href="friends/show/{{ user.pseudo }}" class="text-warning"><strong>{{ user.pseudo }}</strong></a>!</h5>
+          <small class="text-muted">Age : {{ user.age }}</small>
+        </div>
+        <p class="mb-1"><strong>{{ user.pseudo }}</strong> n'est toujours pas dans votre liste de contacts, ajoutez le
+          en un click.</p>
+        <small class="text-muted"><a href="/add/{{ user.pseudo }}/{{ id }}" class="text-warning">Ajouter {{ user.pseudo
+            }} a votre liste de contact
+            !</a></small>
+      </div>
+      <br>
+    </div>
+  </div>
+</div>

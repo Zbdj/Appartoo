@@ -1,0 +1,49 @@
+<div class="container" style="margin-top: 3%;">
+  <div class="card border-warning mb-3">
+    <div class="card-header">
+      <h4 class="card-title">Inscription</h4>
+    </div>
+    <div class="card-body">
+      <form (ngSubmit)='register()'>
+        <div class="form-group">
+          <label for="username">Veuillez entrer votre pseudo</label>
+          <input type="text" name="username" placeholder="Votre pseudo" class="form-control" id="username" [(ngModel)]='username'>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Veuillez entrer votre mot de passe</label>
+          <input type="password" name="password" placeholder="Votre mot de passe" class="form-control" [(ngModel)]='password'>
+        </div>
+
+        <div class="form-group">
+          <label for="age">Veuillez entrer âge</label>
+          <input type="number" name="age" placeholder="Votre age" class="form-control" [(ngModel)]='age'>
+        </div>
+
+        <div class="form-group">
+          <label for="age">Veuillez entrer votre nom de famille</label>
+          <input type="text" name="famille" placeholder="Nom de famille" class="form-control" [(ngModel)]='famille'>
+        </div>
+
+        <div class="form-group">
+          <label for="race">Veuillez entrer votre race</label>
+          <input type="text" name="race" placeholder="Votre race" class="form-control" [(ngModel)]='race'>
+        </div>
+
+        <div class="form-group">
+          <label for="race">Veuillez entrer votre nourriture</label>
+          <input type="text" name="nourriture" placeholder="Votre nourriture" class="form-control" [(ngModel)]='nourriture'><br>
+        </div>
+
+        <small id="emailHelp" class="form-text text-muted">Nous ne partagerons vos données avec personne.</small>
+        <button type="submit" class="btn btn-warning" style="margin-top: 2%;">S'inscrire</button>
+      </form>
+
+    </div>
+  </div>
+
+  <div class="alert alert-dismissible alert-secondary" style="margin-top: 1%;">
+    <p>Deja inscrit sur le site ? <a href="/login" class="alert-link"> Connectez vous !</a></p>
+  </div>
+
+</div>

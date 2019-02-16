@@ -1,0 +1,30 @@
+<div class="container" style="margin-top: 3%;">
+  <div class="card border-warning">
+    <div class="card-body">
+      <h4>Voici la liste de vos amis</h4>
+    </div>
+  </div>
+
+  <div class="container" style="margin-top: 3%;">
+    <div class="list-group" *ngFor="let id of ids">
+      <div class="list-group-item">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">Vous êtes ami avec <strong>{{ id.pseudo }}</strong>!</h5>
+        </div><br>
+        <a href="friends/show/{{ id.pseudo }}" class="text-warning">
+          <h5 class="mb-1">Voir le profil de <strong>{{ id.pseudo }}</strong></h5>
+        </a><br>
+        <small class="text-muted"> <a href="delete/{{ id.pseudo }}/{{ users }}" class="text-danger">
+            <h6>Supprimer {{ id.pseudo }} de votre
+              liste de contact </h6>
+          </a>
+        </small>
+      </div>
+      <br>
+    </div>
+    <div style="margin-top: 3%;">
+      <a class="text-white" style="margin-top: 3%;" href="/">Retour a l'accueil</a>
+    </div>
+  </div>
+
+</div>

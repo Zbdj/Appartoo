@@ -1,0 +1,79 @@
+<div class="container" style="margin-top: 3%;" *ngFor="let account of accounts">
+  <h4>Content de vous revoir {{ account.pseudo }} ! </h4><br>
+  <div class="card border-warning mb-3">
+    <div class="card-header">
+      <h4 class="card-title">{{ account.pseudo }}</h4>
+    </div>
+    <div class="card-body">
+      <p>Pseudo : <strong>{{ account.pseudo }}</strong></p>
+      <p>Age : <strong>{{ account.age }}</strong></p>
+      <p>Famille : <strong>{{ account.famille }}</strong></p>
+      <p>Race : <strong>{{ account.race }}</strong></p>
+      <p>Nourriture : <strong>{{ account.nourriture }}</strong></p>
+
+    </div>
+  </div>
+
+
+
+  <div id="accordion" style="margin-bottom: 10%; margin-top: 4%;">
+    <div class="card">
+      <div class="card-header" id="headingTwo">
+        <h5 class="mb-0">
+          <button class="btn btn-secondary collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false"
+            aria-controls="collapseTwo">
+            <h5 class="text-white">Modifier vos informations</h5>
+          </button>
+        </h5>
+      </div>
+
+      <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+        <div class="card-body">
+
+          <!--Contenu de la div affichant le formulaire-->
+
+          <form (ngSubmit)='edit()'>
+            <div class="form-group">
+              <label for="username">Changer de pseudo</label>
+              <input type="text" name="username" placeholder="Votre pseudo" class="form-control" id="username"
+                [(ngModel)]='username'>
+            </div>
+
+
+            <div class="form-group">
+              <label for="age">Changer d'age</label>
+              <input type="number" name="age" placeholder="Votre age" class="form-control" [(ngModel)]='age'>
+            </div>
+
+            <div class="form-group">
+              <label for="age">Changer de nom de famille</label>
+              <input type="text" name="famille" placeholder="Nom de famille" class="form-control" [(ngModel)]='famille'>
+            </div>
+
+            <div class="form-group">
+              <label for="race">Changer de race</label>
+              <input type="text" name="race" placeholder="Votre race" class="form-control" [(ngModel)]='race'>
+            </div>
+
+            <div class="form-group">
+              <label for="race">Changer de nourriture</label>
+              <input type="text" name="nourriture" placeholder="Votre nourriture" class="form-control" [(ngModel)]='nourriture'><br>
+            </div>
+
+            <small id="emailHelp" class="form-text text-muted">Nous ne partagerons vos données avec
+              personne.</small>
+            <button type="submit" class="btn btn-warning" style="margin-top: 2%;">Mettre a jour</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <button class="btn btn-danger" (click)="delete()" style="margin-top: 3%;">Supprimer son compte</button>
+    <div style="margin-top: 3%;">
+      <a class="text-white" style="margin-top: 3%;" href="/">Retour a l'accueil</a>
+    </div>
+
+  </div>

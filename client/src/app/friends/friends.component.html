@@ -1,0 +1,18 @@
+<div class="container" style="margin-top: 3%;" *ngFor="let friend of friends">
+  <h4>Profil de {{ friend.pseudo }} ! </h4><br>
+  <div class="card border-warning mb-3">
+    <div class="card-header">
+      <h4 class="card-title">{{ friend.pseudo }}</h4>
+    </div>
+    <div class="card-body">
+      <p>Pseudo : <strong>{{ friend.pseudo }}</strong></p>
+      <p>Age : <strong>{{ friend.age }}</strong></p>
+      <p>Famille : <strong>{{ friend.famille }}</strong></p>
+      <p>Race : <strong>{{ friend.race }}</strong></p>
+      <p>Nourriture : <strong>{{ friend.nourriture }}</strong></p>
+
+    </div>
+  </div>
+  <div style="margin-top: 3%;">
+    <a class="text-white" style="margin-top: 3%;" href="/">Retour a l'accueil</a>
+  </div>
